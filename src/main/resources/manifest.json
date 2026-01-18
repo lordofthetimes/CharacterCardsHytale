@@ -1,0 +1,22 @@
+{
+    "Group": "LordofTheTime",
+    "Name": "CharacterCards",
+    "Version": "0.0.1",
+    "Description": "Plugin adding Character Cards to the game aiming to enhance roleplay experience!",
+    "Authors": [
+        {
+            "Name": "LordofTheTimes"
+        }
+    ],
+    "Website": "",
+    "ServerVersion": "*",
+    "Dependencies": {
+        
+    },
+    "OptionalDependencies": {
+        
+    },
+    "DisabledByDefault": false,
+    "Main": "net.lordofthetimes.charactercards.CharacterCards",
+    "IncludesAssetPack": true
+}
