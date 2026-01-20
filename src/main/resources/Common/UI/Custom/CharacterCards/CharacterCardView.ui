@@ -1,0 +1,38 @@
+Group {
+
+  LayoutMode: Top;
+  Anchor: (Width: 1000, Height: 700);
+  Padding: (Full: 20);
+  Background: #2a2a2a;
+
+  Label #Name {
+    Style: (FontSize: 20, Alignment: Center);
+    Anchor: (Top: 50);
+    Padding: (Left: 10);
+  }
+  Label #Age {
+    Style: (FontSize: 20, Alignment: Center);
+    Anchor: (Top: 50);
+    Padding: (Left: 10);
+  }
+  Label #Race {
+    Style: (FontSize: 20, Alignment: Center);
+    Anchor: (Top: 50);
+    Padding: (Left: 10);
+  }
+  Label #Gender {
+      Style: (FontSize: 20, Alignment: Center);
+      Anchor: (Top: 50);
+      Padding: (Left: 10);
+  }
+  Label #Description {
+      Style: (FontSize: 20, Alignment: Center);
+      Anchor: (Top: 50);
+      Padding: (Left: 10);
+  }
+  Label #Lore {
+      Style: (FontSize: 20, Alignment: Center);
+      Anchor: (Top: 50);
+      Padding: (Left: 10);
+  }
+}
