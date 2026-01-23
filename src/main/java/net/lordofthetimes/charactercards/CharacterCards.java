@@ -46,5 +46,6 @@ public class CharacterCards extends JavaPlugin {
         this.getEventRegistry().registerGlobal(PlayerReadyEvent.class, playerJoinEvent::onPlayerReady);
         this.getCommandRegistry().registerCommand(characterCommand);
         this.getCommandRegistry().registerCommand(new CharacterGuiCommand(characterService));
+        
     }
 }

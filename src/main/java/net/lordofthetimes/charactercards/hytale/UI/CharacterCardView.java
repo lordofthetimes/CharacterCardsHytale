@@ -16,9 +16,11 @@ import javax.annotation.Nonnull;
 public class CharacterCardView extends CustomUIPage {
 
     private final CharacterCardComponent character;
-    public CharacterCardView(@Nonnull PlayerRef playerRef, @Nonnull CustomPageLifetime lifetime, CharacterCardComponent character) {
+    private final String username;
+    public CharacterCardView(@Nonnull PlayerRef playerRef, @Nonnull CustomPageLifetime lifetime, CharacterCardComponent character,String username) {
         super(playerRef, lifetime);
         this.character = character;
+        this.username = username;
     }
 
     @Override
@@ -30,5 +32,6 @@ public class CharacterCardView extends CustomUIPage {
         uiCommandBuilder.set("#Gender.Text",CardFormatter.formatGender(character.getGender()));
         uiCommandBuilder.set("#Description.Text",CardFormatter.formatDescription(character.getDescription()));
         uiCommandBuilder.set("#Lore.Text",CardFormatter.formatLore(character.getLore()));
+        uiCommandBuilder.set("#titleText.Text",username+"'s Character Card");
     }
 }

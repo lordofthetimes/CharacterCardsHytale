@@ -39,7 +39,7 @@ public class CharacterGuiCommand extends AbstractPlayerCommand {
             Player executor = execStore.getComponent(execRef,Player.getComponentType());
 
             if(playerArg.get(context) == null || playerArg.get(context).equals("")) {
-                CustomUIPage page = adapter.getPlayerCharacter(execStore,execRef);
+                CustomUIPage page = adapter.getPlayerCharacter(execStore,execRef,executor.getDisplayName());
                 executor.getPageManager().openCustomPage(execRef,execStore,page);
                 return;
             }
@@ -52,7 +52,8 @@ public class CharacterGuiCommand extends AbstractPlayerCommand {
             Universe.get().getWorld(target.getWorldUuid()).execute(()->{
                 Ref<EntityStore> targetRef = target.getReference();
                 Store<EntityStore> targetRefStore = targetRef.getStore();
-                CustomUIPage page = adapter.getPlayerCharacter(targetRefStore,targetRef);
+                Player player = targetRefStore.getComponent(targetRef,Player.getComponentType());
+                CustomUIPage page = adapter.getPlayerCharacter(targetRefStore,targetRef,player.getDisplayName());
                 executor.getWorld().execute(()->{
                     executor.getPageManager().openCustomPage(execRef,execStore,page);
                 });

@@ -9,6 +9,7 @@ import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import net.lordofthetimes.charactercards.adapters.character.CharacterChatAdapter;
 import net.lordofthetimes.charactercards.hytale.command.charactersubcmd.CharacterChatCommand;
+import net.lordofthetimes.charactercards.hytale.command.charactersubcmd.CharacterEditCommand;
 import net.lordofthetimes.charactercards.hytale.command.charactersubcmd.CharacterGuiCommand;
 import net.lordofthetimes.charactercards.service.CharacterService;
 
@@ -28,6 +29,7 @@ public class CharacterCommand extends CommandBase {
 
         this.addSubCommand(new CharacterGuiCommand(characterService));
         this.addSubCommand(new CharacterChatCommand(adapter));
+        this.addSubCommand(new CharacterEditCommand(characterService));
     }
 
     @Override
@@ -37,7 +39,7 @@ public class CharacterCommand extends CommandBase {
         Ref<EntityStore> ref = player.getReference();
         player.getWorld().execute(()->{
             Store<EntityStore> store = ref.getStore();
-            player.sendMessage(adapter.getPlayerCharacter(store,ref));
+            player.sendMessage(adapter.getPlayerCharacter(store,ref,player.getDisplayName()));
         });
     }
 

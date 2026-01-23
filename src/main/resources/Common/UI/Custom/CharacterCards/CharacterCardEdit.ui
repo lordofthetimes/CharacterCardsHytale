@@ -1,0 +1,109 @@
+$C = "../Common.ui";
+
+$C.@DecoratedContainer {
+  Anchor: (Width: 900, Height: 700);
+
+  #Title {
+    Group {
+      LayoutMode: Center;
+
+      $C.@Title #titleText {
+        @Text = "Strangers Character Card";
+        Style: (FontSize: 25);
+        Anchor: (Height: 35);
+      }
+    }
+  }
+
+  #Content {
+    LayoutMode: Top;
+    Padding: (Top: 10);
+
+    Label #NameLabel {
+      Style: (FontSize: 20);
+      Padding:(Left:5, Top:5, Bottom:5);
+      Text: "Name";
+      Anchor: (Width: 800);
+    }
+    $C.@TextField #Name {
+      Padding:(Left:5, Top:5, Bottom:5);
+      Style: (FontSize: 20);
+      Anchor: (Height:30,Width: 800);
+    }
+
+    Label #AgeLabel {
+      Style: (FontSize: 20);
+      Text: "Age";
+      Padding:(Left:5, Top:5, Bottom:5);
+      Anchor: (Width: 800);
+    }
+    $C.@TextField #Age {
+      Style: (FontSize: 20);
+      Padding:(Left:5, Top:5, Bottom:5);
+      Anchor: (Height:30,Width: 800);
+    }
+
+    Label #RaceLabel {
+      Style: (FontSize: 20);
+      Text: "Race";
+      Padding:(Left:5, Top:5, Bottom:5);
+      Anchor: (Width: 800);
+    }
+    $C.@TextField #Race {
+      Style: (FontSize: 20);
+      Padding:(Left:5, Top:5, Bottom:5);
+      Anchor: (Height:30,Width: 800);
+    }
+
+    Label #GenderLabel {
+      Style: (FontSize: 20);
+      Text: "Gender";
+      Padding:(Left:5, Top:5, Bottom:5);
+      Anchor: (Width: 800);
+    }
+    $C.@TextField #Gender {
+      Style: (FontSize: 20);
+      Anchor: (Height:30,Width: 800);
+    }
+
+    Label #DescriptionLabel {
+      Anchor: (Width: 800);
+      Style: (FontSize: 20);
+      Text: "Description";
+      Padding:(Left:5, Top:5, Bottom:5);
+    }
+    MultilineTextField #Description {
+        Anchor: (Width: 800);
+        Background: $C.@InputBoxBackground;
+        AutoGrow: true;
+        Style: $C.@DefaultInputFieldStyle;
+        MaxLength: 1000;
+        Padding:(Left:5, Top:5, Bottom:5);
+    }
+
+    Label #LoreLabel {
+      Anchor: (Width: 800);
+      Style: (FontSize: 20);
+      Text: "Lore";
+      Padding:(Left:5, Top:5, Bottom:5);
+    }
+    MultilineTextField #Lore {
+        Anchor: (Width: 800);
+        Background: $C.@InputBoxBackground;
+        AutoGrow: true;
+        Style: $C.@DefaultInputFieldStyle;
+        MaxLength: 1000;
+        Padding:(Left:5, Top:5, Bottom:5);
+    }
+
+    Group {
+      Padding: (Top:25, Left:5);
+      TextButton #Save {
+        Anchor: (Height: 40, Width: 800);
+        Background: (Color:#1f2f4a(0.9));
+        Text: "Save";
+        Style: (Default:(LabelStyle:(Alignment:Center,FontSize:25)),Hovered:(LabelStyle:(Alignment:Center,FontSize:25),Background:#000000(0.15)),Pressed:(LabelStyle:(Alignment:Center,FontSize:25),Background:#000000(0.5)));
+      }
+    }
+  }
+}

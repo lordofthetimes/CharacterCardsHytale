@@ -8,6 +8,7 @@ import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import net.lordofthetimes.charactercards.adapters.ICharacterAdapters;
 import net.lordofthetimes.charactercards.component.CharacterCardComponent;
+import net.lordofthetimes.charactercards.hytale.UI.CharacterCardEdit;
 import net.lordofthetimes.charactercards.hytale.UI.CharacterCardView;
 import net.lordofthetimes.charactercards.service.CharacterService;
 
@@ -26,10 +27,16 @@ public class CharacterGuiAdapter implements ICharacterAdapters<CustomUIPage> {
     }
 
     @Override
-    public CharacterCardView getPlayerCharacter(Store<EntityStore> store, Ref<EntityStore> ref){
+    public CharacterCardView getPlayerCharacter(Store<EntityStore> store, Ref<EntityStore> ref,String username){
         PlayerRef playerRef = store.getComponent(ref,PlayerRef.getComponentType());
         CharacterCardComponent character = store.getComponent(ref, CharacterCardComponent.getComponentType());
-        return new CharacterCardView(playerRef,CustomPageLifetime.CanDismiss,character);
+        return new CharacterCardView(playerRef,CustomPageLifetime.CanDismiss,character,username);
+    }
+
+    public CharacterCardEdit editPlayerCharacter(Store<EntityStore> store, Ref<EntityStore> ref, String username){
+        PlayerRef playerRef = store.getComponent(ref,PlayerRef.getComponentType());
+        CharacterCardComponent character = store.getComponent(ref, CharacterCardComponent.getComponentType());
+        return new CharacterCardEdit(playerRef,character,username,this);
     }
     
 }

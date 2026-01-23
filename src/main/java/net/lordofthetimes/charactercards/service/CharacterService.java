@@ -24,4 +24,9 @@ public class CharacterService {
         store.ensureComponent(ref, CharacterCardComponent.getComponentType());
         return true;
     }
+
+    public Boolean setPlayerCharacter(Store<EntityStore> store, Ref<EntityStore> ref, CharacterCardComponent character){
+        store.replaceComponent(ref,CharacterCardComponent.getComponentType(),character);
+        return true;
+    }
 }

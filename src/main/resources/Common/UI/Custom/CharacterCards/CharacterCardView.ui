@@ -1,38 +1,48 @@
-Group {
+$C = "../Common.ui";
 
-  LayoutMode: Top;
-  Anchor: (Width: 1000, Height: 700);
-  Padding: (Full: 20);
-  Background: #2a2a2a;
+$C.@DecoratedContainer {
+  Anchor: (Width: 600, Height:600);
+  #Title {
+    Group {
+      LayoutMode: Center;
+      $C.@Title #titleText {
+        @Text = "Edit Stranger's Character";
+        Style: (FontSize: 25);
+        Anchor: (Height: 35);
+      }
+    }
+  }
 
-  Label #Name {
-    Style: (FontSize: 20, Alignment: Center);
-    Anchor: (Top: 50);
-    Padding: (Left: 10);
-  }
-  Label #Age {
-    Style: (FontSize: 20, Alignment: Center);
-    Anchor: (Top: 50);
-    Padding: (Left: 10);
-  }
-  Label #Race {
-    Style: (FontSize: 20, Alignment: Center);
-    Anchor: (Top: 50);
-    Padding: (Left: 10);
-  }
-  Label #Gender {
-      Style: (FontSize: 20, Alignment: Center);
-      Anchor: (Top: 50);
-      Padding: (Left: 10);
-  }
-  Label #Description {
-      Style: (FontSize: 20, Alignment: Center);
-      Anchor: (Top: 50);
-      Padding: (Left: 10);
-  }
-  Label #Lore {
-      Style: (FontSize: 20, Alignment: Center);
-      Anchor: (Top: 50);
-      Padding: (Left: 10);
+  #Content {
+
+    Label #Name {
+      Style: (FontSize: 20);
+      Padding:(Left:5, Top:5, Bottom:5);
+    }
+
+    Label #Age {
+      Style: (FontSize: 20);
+      Padding:(Left:5, Top:5, Bottom:5);
+    }
+
+    Label #Race {
+      Style: (FontSize: 20);
+      Padding:(Left:5, Top:5, Bottom:5);
+    }
+
+    Label #Gender {
+      Style: (FontSize: 20);
+      Padding:(Left:5, Top:5, Bottom:5);
+    }
+
+    Label #Description {
+      Style: (FontSize: 20, Wrap:true);
+      Padding:(Left:5, Top:5, Bottom:5);
+    }
+
+    Label #Lore {
+      Style: (FontSize: 20, Wrap:true);
+      Padding:(Left:5, Top:5, Bottom:5);
+    }
   }
 }

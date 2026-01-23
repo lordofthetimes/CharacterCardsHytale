@@ -21,9 +21,9 @@ public class CharacterChatAdapter implements ICharacterAdapters<Message> {
         this.characterService = characterService;
     }
 
-    public Message getPlayerCharacter(Store<EntityStore> store, Ref<EntityStore> ref){
+    public Message getPlayerCharacter(Store<EntityStore> store, Ref<EntityStore> ref,String username){
         CharacterCardComponent character = characterService.getPlayerCharacter(store,ref);
-        return CardFormatter.formatChatCard(character);
+        return CardFormatter.formatChatCard(character,username);
     }
 
     @Override

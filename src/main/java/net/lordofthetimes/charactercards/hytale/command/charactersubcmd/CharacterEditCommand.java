@@ -8,34 +8,29 @@ import com.hypixel.hytale.server.core.command.system.CommandContext;
 import com.hypixel.hytale.server.core.command.system.arguments.system.OptionalArg;
 import com.hypixel.hytale.server.core.command.system.arguments.types.ArgTypes;
 import com.hypixel.hytale.server.core.command.system.basecommands.AbstractPlayerCommand;
-import com.hypixel.hytale.server.core.command.system.basecommands.CommandBase;
 import com.hypixel.hytale.server.core.entity.entities.Player;
-import com.hypixel.hytale.server.core.entity.entities.player.pages.CustomUIPage;
+import com.hypixel.hytale.server.core.entity.entities.player.pages.InteractiveCustomUIPage;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.Universe;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
-import net.lordofthetimes.charactercards.adapters.character.CharacterChatAdapter;
+import net.lordofthetimes.charactercards.adapters.character.CharacterGuiAdapter;
+import net.lordofthetimes.charactercards.hytale.UI.CharacterCardEdit;
 import net.lordofthetimes.charactercards.service.CharacterService;
 
 import javax.annotation.Nonnull;
 import java.awt.*;
 
-public class CharacterChatCommand extends AbstractPlayerCommand {
+public class CharacterEditCommand extends AbstractPlayerCommand {
 
-    private final CharacterChatAdapter adapter;
+    private final CharacterGuiAdapter adapter;
     private final OptionalArg<String> playerArg;
 
-    public CharacterChatCommand(CharacterChatAdapter adapter){
-        super("chat","Command for viewing character card as formatted chat message");
+    public CharacterEditCommand(CharacterService characterService){
+        super("edit","Command for editing Character Cards");
+        this.adapter = new CharacterGuiAdapter(characterService);
         playerArg = this.withOptionalArg("player",
-                "Whose character card open. Leaving it empty will open it for player running the command", ArgTypes.STRING);
-        this.adapter = adapter;
-    }
-
-    @Override
-    public String getPermission() {
-        return "charactercards.chat";
+                "Whose character card edit menu will open. Leaving it empty will open it for player running the command", ArgTypes.STRING);
     }
 
     @Override
@@ -45,7 +40,8 @@ public class CharacterChatCommand extends AbstractPlayerCommand {
             Player executor = execStore.getComponent(execRef,Player.getComponentType());
 
             if(playerArg.get(context) == null || playerArg.get(context).equals("")) {
-                executor.sendMessage(adapter.getPlayerCharacter(execStore,execRef,executor.getDisplayName()));
+                InteractiveCustomUIPage<CharacterCardEdit.Data> page = adapter.editPlayerCharacter(execStore,execRef,executor.getDisplayName());
+                executor.getPageManager().openCustomPage(execRef,execStore,page);
                 return;
             }
 
@@ -57,11 +53,18 @@ public class CharacterChatCommand extends AbstractPlayerCommand {
             Universe.get().getWorld(target.getWorldUuid()).execute(()->{
                 Ref<EntityStore> targetRef = target.getReference();
                 Store<EntityStore> targetRefStore = targetRef.getStore();
-                Player targetPlr = targetRefStore.getComponent(targetRef,Player.getComponentType());
-                Message message = adapter.getPlayerCharacter(targetRefStore,targetRef,targetPlr.getDisplayName());
-                executor.sendMessage(message);
+                Player player = targetRefStore.getComponent(targetRef,Player.getComponentType());
+                InteractiveCustomUIPage<CharacterCardEdit.Data> page = adapter.editPlayerCharacter(targetRefStore,targetRef,player.getDisplayName());
+                executor.getWorld().execute(()->{
+                    executor.getPageManager().openCustomPage(execRef,execStore,page);
+                });
             });
 
         });
+    }
+
+    @Override
+    public String getPermission() {
+        return "charactercards.gui";
     }
 }
