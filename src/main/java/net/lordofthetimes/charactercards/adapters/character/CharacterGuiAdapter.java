@@ -12,6 +12,8 @@ import net.lordofthetimes.charactercards.hytale.UI.CharacterCardEdit;
 import net.lordofthetimes.charactercards.hytale.UI.CharacterCardView;
 import net.lordofthetimes.charactercards.service.CharacterService;
 
+import java.util.UUID;
+
 public class CharacterGuiAdapter implements ICharacterAdapters<CustomUIPage> {
 
     CharacterService characterService;
@@ -33,10 +35,10 @@ public class CharacterGuiAdapter implements ICharacterAdapters<CustomUIPage> {
         return new CharacterCardView(playerRef,CustomPageLifetime.CanDismiss,character,username);
     }
 
-    public CharacterCardEdit editPlayerCharacter(Store<EntityStore> store, Ref<EntityStore> ref, String username){
+    public CharacterCardEdit editPlayerCharacter(Store<EntityStore> store, Ref<EntityStore> ref, String username, UUID uuid){
         PlayerRef playerRef = store.getComponent(ref,PlayerRef.getComponentType());
         CharacterCardComponent character = store.getComponent(ref, CharacterCardComponent.getComponentType());
-        return new CharacterCardEdit(playerRef,character,username,this);
+        return new CharacterCardEdit(playerRef,character,username,this,uuid);
     }
     
 }

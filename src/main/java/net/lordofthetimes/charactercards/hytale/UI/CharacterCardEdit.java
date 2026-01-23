@@ -15,6 +15,7 @@ import com.hypixel.hytale.server.core.ui.builder.EventData;
 import com.hypixel.hytale.server.core.ui.builder.UICommandBuilder;
 import com.hypixel.hytale.server.core.ui.builder.UIEventBuilder;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
+import com.hypixel.hytale.server.core.universe.Universe;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import net.lordofthetimes.charactercards.adapters.ICharacterAdapters;
 import net.lordofthetimes.charactercards.component.CharacterCardComponent;
@@ -22,17 +23,20 @@ import net.lordofthetimes.charactercards.utils.CardFormatter;
 
 import javax.annotation.Nonnull;
 import java.awt.*;
+import java.util.UUID;
 
 public class CharacterCardEdit extends InteractiveCustomUIPage<CharacterCardEdit.Data> {
 
     private final CharacterCardComponent character;
     private final String username;
     private final ICharacterAdapters adapter;
-    public CharacterCardEdit(@Nonnull PlayerRef playerRef, CharacterCardComponent character, String username, ICharacterAdapters adapter) {
+    private final UUID ownerUUID;
+    public CharacterCardEdit(@Nonnull PlayerRef playerRef, CharacterCardComponent character, String username, ICharacterAdapters adapter, UUID ownerUUID) {
         super(playerRef, CustomPageLifetime.CantClose,Data.CODEC);
         this.character = character;
         this.username = username;
         this.adapter = adapter;
+        this.ownerUUID = ownerUUID;
     }
 
     @Override
@@ -69,14 +73,26 @@ public class CharacterCardEdit extends InteractiveCustomUIPage<CharacterCardEdit
         String description = data.description !=null && !data.description.isEmpty() ? data.description : "None";
         String lore = data.lore !=null && !data.lore.isEmpty() ? data.lore : "None";
 
+        Universe universe = Universe.get();
+
         CharacterCardComponent character = new CharacterCardComponent(name,age,race,gender,description,lore);
+        PlayerRef playerRef = universe.getPlayer(ownerUUID);
+
         Player player = store.getComponent(ref,Player.getComponentType());
 
-        boolean result = adapter.setPlayerCharacter(store,ref,character);
-        if(result) player.sendMessage(Message.raw("Saved Character card!").color(Color.GREEN));
+        if (playerRef == null) {
+            player.sendMessage(Message.raw("Owner of the character card is offline. It was not saved").color(Color.RED));
+            player.getPageManager().setPage(ref,store, Page.None);
+            return;
+        }
 
+        universe.getWorld(playerRef.getWorldUuid()).execute(()->{
+            Ref<EntityStore> ownerRef = playerRef.getReference();
+            adapter.setPlayerCharacter(ownerRef.getStore(),ownerRef,character);
+        });
+
+        player.sendMessage(Message.raw("Saved Character card!").color(Color.GREEN));
         player.getPageManager().setPage(ref,store, Page.None);
-
     }
 
     public static class Data{
