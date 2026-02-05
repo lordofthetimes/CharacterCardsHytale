@@ -45,7 +45,7 @@ public class CharacterEditCommand extends AbstractPlayerCommand {
                 executor.getPageManager().openCustomPage(execRef,execStore,page);
                 return;
             }
-
+            if(!executor.hasPermission("charactercards.admin")) return;
             PlayerRef target = Universe.get().getPlayer(playerArg.get(context), NameMatching.EXACT_IGNORE_CASE);
             if(target == null){
                 executor.sendMessage(Message.raw("This player is offline or does not exist").color(Color.YELLOW));

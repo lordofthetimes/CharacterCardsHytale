@@ -29,7 +29,7 @@ public class CharacterGuiAdapter implements ICharacterAdapters<CustomUIPage> {
     }
 
     @Override
-    public CharacterCardView getPlayerCharacter(Store<EntityStore> store, Ref<EntityStore> ref,String username){
+    public CharacterCardView getPlayerCharacter(Store<EntityStore> store, Ref<EntityStore> ref, String username){
         PlayerRef playerRef = store.getComponent(ref,PlayerRef.getComponentType());
         CharacterCardComponent character = store.getComponent(ref, CharacterCardComponent.getComponentType());
         return new CharacterCardView(playerRef,CustomPageLifetime.CanDismiss,character,username);

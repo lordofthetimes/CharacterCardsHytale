@@ -7,12 +7,12 @@ import java.awt.*;
 
 public class CardFormatter {
 
-    public static String nameMessage = "Name: %value%";
-    public static String ageMessage = "Age: %value%";
-    public static String raceMessage = "Race: %value%";
-    public static String genderMessage = "Gender: %value%";
-    public static String descriptionMessage = "Description: %value%";
-    public static String loreMessage = "Lore: %value%";
+    public static String nameMessage = "Name : %value%";
+    public static String ageMessage = "Age : %value%";
+    public static String raceMessage = "Race : %value%";
+    public static String genderMessage = "Gender : %value%\n";
+    public static String descriptionMessage = "Description : %value%\n";
+    public static String loreMessage = "Lore : %value%";
 
     public static String formatName(String value){
         return nameMessage.replace("%value%",value);
