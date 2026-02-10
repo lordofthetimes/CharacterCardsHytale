@@ -9,6 +9,8 @@ import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 
 public class CharacterCardComponent implements Component<EntityStore> {
 
+    public static ComponentType<EntityStore, CharacterCardComponent> TYPE;
+
     public static final BuilderCodec<CharacterCardComponent> CODEC = BuilderCodec.<CharacterCardComponent>builder(
             CharacterCardComponent.class,
             CharacterCardComponent::new
@@ -58,7 +60,7 @@ public class CharacterCardComponent implements Component<EntityStore> {
     }
 
     public static ComponentType<EntityStore, CharacterCardComponent> getComponentType(){
-        return PluginComponents.characterCard;
+        return TYPE;
     }
 
     @Override

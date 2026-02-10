@@ -1,10 +1,11 @@
-package net.lordofthetimes.charactercards.hytale.command.charactersubcmd;
+package net.lordofthetimes.charactercards.command.charactersubcmd;
 
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.NameMatching;
 import com.hypixel.hytale.server.core.command.system.CommandContext;
+import com.hypixel.hytale.server.core.command.system.CommandSender;
 import com.hypixel.hytale.server.core.command.system.arguments.system.OptionalArg;
 import com.hypixel.hytale.server.core.command.system.arguments.types.ArgTypes;
 import com.hypixel.hytale.server.core.command.system.basecommands.AbstractPlayerCommand;
@@ -15,21 +16,20 @@ import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.Universe;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
-import net.lordofthetimes.charactercards.adapters.character.CharacterGuiAdapter;
-import net.lordofthetimes.charactercards.hytale.UI.CharacterCardEdit;
-import net.lordofthetimes.charactercards.service.CharacterService;
+import net.lordofthetimes.charactercards.CharacterCards;
+import net.lordofthetimes.charactercards.UI.CharacterCardEdit;
+import net.lordofthetimes.charactercards.utils.CardUtils;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
 import java.awt.*;
 
 public class CharacterEditCommand extends AbstractPlayerCommand {
 
-    private final CharacterGuiAdapter adapter;
     private final OptionalArg<String> playerArg;
 
-    public CharacterEditCommand(CharacterService characterService){
+    public CharacterEditCommand(CharacterCards plugin){
         super("edit","Command for editing Character Cards");
-        this.adapter = new CharacterGuiAdapter(characterService);
         playerArg = this.withOptionalArg("player",
                 "Whose character card edit menu will open. Leaving it empty will open it for player running the command", ArgTypes.STRING);
     }
@@ -41,23 +41,43 @@ public class CharacterEditCommand extends AbstractPlayerCommand {
             Player executor = execStore.getComponent(execRef,Player.getComponentType());
 
             if(playerArg.get(context) == null || playerArg.get(context).equals("")) {
-                InteractiveCustomUIPage<CharacterCardEdit.Data> page = adapter.editPlayerCharacter(execStore,execRef,executor.getDisplayName(),execPlayerRef.getUuid());
+
+                InteractiveCustomUIPage<CharacterCardEdit.Data> page = CardUtils.editPlayerCharacter(
+                        execStore,
+                        execRef,
+                        executor.getDisplayName(),
+                        execPlayerRef.getUuid()
+                );
+
                 executor.getPageManager().openCustomPage(execRef,execStore,page);
                 return;
             }
+
             if(!executor.hasPermission("charactercards.admin")) return;
+
             PlayerRef target = Universe.get().getPlayer(playerArg.get(context), NameMatching.EXACT_IGNORE_CASE);
+
             if(target == null){
                 executor.sendMessage(Message.raw("This player is offline or does not exist").color(Color.YELLOW));
                 return;
             }
+
             Universe.get().getWorld(target.getWorldUuid()).execute(()->{
+
                 Ref<EntityStore> targetRef = target.getReference();
                 Store<EntityStore> targetRefStore = targetRef.getStore();
                 Player player = targetRefStore.getComponent(targetRef,Player.getComponentType());
-                InteractiveCustomUIPage<CharacterCardEdit.Data> page = adapter.editPlayerCharacter(targetRefStore,targetRef,player.getDisplayName(),targetRefStore.getComponent(targetRef, UUIDComponent.getComponentType()).getUuid());
+
+                InteractiveCustomUIPage<CharacterCardEdit.Data> page = CardUtils.editPlayerCharacter(
+                        targetRefStore,
+                        targetRef,
+                        player.getDisplayName(),
+                        targetRefStore.getComponent(targetRef, UUIDComponent.getComponentType()).getUuid()
+                );
                 executor.getWorld().execute(()->{
+
                     executor.getPageManager().openCustomPage(execRef,execStore,page);
+
                 });
             });
 
@@ -67,5 +87,10 @@ public class CharacterEditCommand extends AbstractPlayerCommand {
     @Override
     public String getPermission() {
         return "charactercards.gui";
+    }
+
+    @Override
+    public boolean hasPermission(@NotNull CommandSender sender) {
+        return super.hasPermission(sender);
     }
 }

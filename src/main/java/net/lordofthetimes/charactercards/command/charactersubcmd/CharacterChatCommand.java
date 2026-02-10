@@ -1,4 +1,4 @@
-package net.lordofthetimes.charactercards.hytale.command.charactersubcmd;
+package net.lordofthetimes.charactercards.command.charactersubcmd;
 
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
@@ -9,27 +9,31 @@ import com.hypixel.hytale.server.core.command.system.arguments.system.OptionalAr
 import com.hypixel.hytale.server.core.command.system.arguments.types.ArgTypes;
 import com.hypixel.hytale.server.core.command.system.basecommands.AbstractPlayerCommand;
 import com.hypixel.hytale.server.core.entity.entities.Player;
-import com.hypixel.hytale.server.core.entity.entities.player.pages.CustomUIPage;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.Universe;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
-import net.lordofthetimes.charactercards.adapters.character.CharacterGuiAdapter;
-import net.lordofthetimes.charactercards.service.CharacterService;
+import net.lordofthetimes.charactercards.CharacterCards;
+import net.lordofthetimes.charactercards.utils.CardUtils;
 
 import javax.annotation.Nonnull;
 import java.awt.*;
 
-public class CharacterGuiCommand extends AbstractPlayerCommand {
+public class CharacterChatCommand extends AbstractPlayerCommand {
 
-    private final CharacterGuiAdapter adapter;
     private final OptionalArg<String> playerArg;
+    private final CharacterCards plugin;
 
-    public CharacterGuiCommand(CharacterService characterService){
-        super("gui","Main command for viewing Character Cards");
-        this.adapter = new CharacterGuiAdapter(characterService);
+    public CharacterChatCommand(CharacterCards plugin){
+        super("chat","Command for viewing character card as formatted chat message");
+        this.plugin = plugin;
         playerArg = this.withOptionalArg("player",
                 "Whose character card open. Leaving it empty will open it for player running the command", ArgTypes.STRING);
+    }
+
+    @Override
+    public String getPermission() {
+        return "charactercards.chat";
     }
 
     @Override
@@ -39,8 +43,7 @@ public class CharacterGuiCommand extends AbstractPlayerCommand {
             Player executor = execStore.getComponent(execRef,Player.getComponentType());
 
             if(playerArg.get(context) == null || playerArg.get(context).equals("")) {
-                CustomUIPage page = adapter.getPlayerCharacter(execStore,execRef,executor.getDisplayName());
-                executor.getPageManager().openCustomPage(execRef,execStore,page);
+                executor.sendMessage(CardUtils.getPlayerCharacterChat(execStore,execRef,executor.getDisplayName(),plugin));
                 return;
             }
 
@@ -52,18 +55,11 @@ public class CharacterGuiCommand extends AbstractPlayerCommand {
             Universe.get().getWorld(target.getWorldUuid()).execute(()->{
                 Ref<EntityStore> targetRef = target.getReference();
                 Store<EntityStore> targetRefStore = targetRef.getStore();
-                Player player = targetRefStore.getComponent(targetRef,Player.getComponentType());
-                CustomUIPage page = adapter.getPlayerCharacter(targetRefStore,targetRef,player.getDisplayName());
-                executor.getWorld().execute(()->{
-                    executor.getPageManager().openCustomPage(execRef,execStore,page);
-                });
+                Player targetPlr = targetRefStore.getComponent(targetRef,Player.getComponentType());
+                Message message = CardUtils.getPlayerCharacterChat(targetRefStore,targetRef,targetPlr.getDisplayName(),plugin);
+                executor.sendMessage(message);
             });
 
         });
-    }
-
-    @Override
-    public String getPermission() {
-        return "charactercards.gui";
     }
 }

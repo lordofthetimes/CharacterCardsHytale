@@ -1,4 +1,4 @@
-package net.lordofthetimes.charactercards.hytale.UI;
+package net.lordofthetimes.charactercards.UI;
 
 import com.hypixel.hytale.codec.Codec;
 import com.hypixel.hytale.codec.KeyedCodec;
@@ -17,9 +17,8 @@ import com.hypixel.hytale.server.core.ui.builder.UIEventBuilder;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.Universe;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
-import net.lordofthetimes.charactercards.adapters.ICharacterAdapters;
 import net.lordofthetimes.charactercards.component.CharacterCardComponent;
-import net.lordofthetimes.charactercards.utils.CardFormatter;
+import net.lordofthetimes.charactercards.utils.CardUtils;
 
 import javax.annotation.Nonnull;
 import java.awt.*;
@@ -29,13 +28,11 @@ public class CharacterCardEdit extends InteractiveCustomUIPage<CharacterCardEdit
 
     private final CharacterCardComponent character;
     private final String username;
-    private final ICharacterAdapters adapter;
     private final UUID ownerUUID;
-    public CharacterCardEdit(@Nonnull PlayerRef playerRef, CharacterCardComponent character, String username, ICharacterAdapters adapter, UUID ownerUUID) {
+    public CharacterCardEdit(@Nonnull PlayerRef playerRef, CharacterCardComponent character, String username, UUID ownerUUID) {
         super(playerRef, CustomPageLifetime.CantClose,Data.CODEC);
         this.character = character;
         this.username = username;
-        this.adapter = adapter;
         this.ownerUUID = ownerUUID;
     }
 
@@ -88,7 +85,7 @@ public class CharacterCardEdit extends InteractiveCustomUIPage<CharacterCardEdit
 
         universe.getWorld(playerRef.getWorldUuid()).execute(()->{
             Ref<EntityStore> ownerRef = playerRef.getReference();
-            adapter.setPlayerCharacter(ownerRef.getStore(),ownerRef,character);
+            CardUtils.setPlayerCharacter(ownerRef.getStore(),ownerRef,character);
         });
 
         player.sendMessage(Message.raw("Saved Character card!").color(Color.GREEN));
