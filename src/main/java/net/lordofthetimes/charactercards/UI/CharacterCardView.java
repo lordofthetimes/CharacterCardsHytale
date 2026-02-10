@@ -27,17 +27,29 @@ public class CharacterCardView extends CustomUIPage {
     }
 
     @Override
-    public void build(@Nonnull Ref<EntityStore> ref, @Nonnull UICommandBuilder uiCommandBuilder, @Nonnull UIEventBuilder uiEventBuilder, @Nonnull Store<EntityStore> store) {
+    public void build(@Nonnull Ref<EntityStore> ref, @Nonnull UICommandBuilder builder, @Nonnull UIEventBuilder uiEventBuilder, @Nonnull Store<EntityStore> store) {
         PluginConfig config = plugin.config.get();
-        uiCommandBuilder.append("CharacterCards/CharacterCardView.ui");
+        builder.append("CharacterCards/CharacterCardView.ui");
 
-        uiCommandBuilder.set("#titleText.Text",username+"'s Character Card");
+        builder.set("#titleText.Text",username+"'s Character Card");
 
-        uiCommandBuilder.set("#Name.Text", config.formatName(character.getName()));
-        uiCommandBuilder.set("#Age.Text",config.formatAge(character.getAge()));
-        uiCommandBuilder.set("#Race.Text",config.formatRace(character.getRace()));
-        uiCommandBuilder.set("#Gender.Text",config.formatGender(character.getGender()));
-        uiCommandBuilder.set("#Description.Text",config.formatDescription(character.getDescription()));
-        uiCommandBuilder.set("#Lore.Text",config.formatLore(character.getLore()));
+        builder.set("#Name.Text", config.formatName(character.getName()));
+        builder.set("#Age.Text",config.formatAge(character.getAge()));
+        builder.set("#Race.Text",config.formatRace(character.getRace()));
+        builder.set("#Gender.Text",config.formatGender(character.getGender()));
+        builder.set("#Description.Text",config.formatDescription(character.getDescription()));
+        builder.set("#Lore.Text",config.formatLore(character.getLore()));
+
+        removeDisabled(builder,config);
+
+    }
+
+    public void removeDisabled(UICommandBuilder builder, PluginConfig config){
+        if(config.isNameEnabled()) builder.remove("#Name");
+        if(config.isAgeEnabled()) builder.remove("#Age");
+        if(config.isRaceEnabled()) builder.remove("#Race");
+        if(config.isGenderEnabled()) builder.remove("#Gender");
+        if(config.isDescriptionEnabled()) builder.remove("#Description");
+        if(config.isLoreEnabled()) builder.remove("#Lore");
     }
 }

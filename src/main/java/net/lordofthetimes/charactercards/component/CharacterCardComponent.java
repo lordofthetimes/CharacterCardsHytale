@@ -7,6 +7,8 @@ import com.hypixel.hytale.component.Component;
 import com.hypixel.hytale.component.ComponentType;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 
+import javax.annotation.Nonnull;
+
 public class CharacterCardComponent implements Component<EntityStore> {
 
     public static ComponentType<EntityStore, CharacterCardComponent> TYPE;
@@ -59,10 +61,6 @@ public class CharacterCardComponent implements Component<EntityStore> {
         this.lore = "None";
     }
 
-    public static ComponentType<EntityStore, CharacterCardComponent> getComponentType(){
-        return TYPE;
-    }
-
     @Override
     public Component<EntityStore> clone() {
         CharacterCardComponent character = new CharacterCardComponent();
@@ -76,12 +74,12 @@ public class CharacterCardComponent implements Component<EntityStore> {
     }
 
     // Getters
-    public String getName() { return name; }
-    public String getAge() { return age; }
-    public String getRace() { return race; }
-    public String getGender() { return gender; }
-    public String getDescription() { return description; }
-    public String getLore() { return lore; }
+    public @Nonnull String getName() { return name; }
+    public @Nonnull String getAge() { return age; }
+    public @Nonnull String getRace() { return race; }
+    public @Nonnull String getGender() { return gender; }
+    public @Nonnull String getDescription() { return description; }
+    public @Nonnull String getLore() { return lore; }
 
     // Setters
     public void setName(String name) { this.name = name; }
@@ -90,4 +88,8 @@ public class CharacterCardComponent implements Component<EntityStore> {
     public void setGender(String gender) { this.gender = gender; }
     public void setDescription(String description) { this.description = description; }
     public void setLore(String lore) { this.lore = lore; }
+
+    public static ComponentType<EntityStore, CharacterCardComponent> getComponentType(){
+        return TYPE;
+    }
 }

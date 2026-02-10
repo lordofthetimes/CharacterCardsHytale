@@ -48,9 +48,9 @@ public class CardUtils {
 
         return Stream.of(
 
-                        config.isNameEnabled() ? Message.raw(config.formatName(character.getName())) : null,
-                        config.isAgeEnabled() ? Message.raw(config.formatAge(character.getAge())) : null,
-                        config.isRaceEnabled() ? Message.raw(config.formatRace(character.getRace())) : null,
+                        config.isNameEnabled() ? Message.raw(config.formatName(character.getName()) + "\n") : null,
+                        config.isAgeEnabled() ? Message.raw(config.formatAge(character.getAge()) + "\n") : null,
+                        config.isRaceEnabled() ? Message.raw(config.formatRace(character.getRace()) + "\n") : null,
                         config.isGenderEnabled() ? Message.raw(config.formatGender(character.getGender())) : null,
                         config.isDescriptionEnabled() ? Message.raw(config.formatDescription(character.getDescription())) : null,
                         config.isLoreEnabled() ? Message.raw(config.formatLore(character.getLore())) : null

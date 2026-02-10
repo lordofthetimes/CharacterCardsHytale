@@ -17,6 +17,7 @@ import com.hypixel.hytale.server.core.ui.builder.UIEventBuilder;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.Universe;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
+import net.lordofthetimes.charactercards.PluginConfig;
 import net.lordofthetimes.charactercards.component.CharacterCardComponent;
 import net.lordofthetimes.charactercards.utils.CardUtils;
 
@@ -90,6 +91,15 @@ public class CharacterCardEdit extends InteractiveCustomUIPage<CharacterCardEdit
 
         player.sendMessage(Message.raw("Saved Character card!").color(Color.GREEN));
         player.getPageManager().setPage(ref,store, Page.None);
+    }
+
+    public void hideDisabled(UICommandBuilder builder, PluginConfig config){
+        if(config.isNameEnabled()) builder.remove("#Name");
+        if(config.isAgeEnabled()) builder.remove("#Age");
+        if(config.isRaceEnabled()) builder.remove("#Race");
+        if(config.isGenderEnabled()) builder.remove("#Gender");
+        if(config.isDescriptionEnabled()) builder.remove("#Description");
+        if(config.isLoreEnabled()) builder.remove("#Lore");
     }
 
     public static class Data{

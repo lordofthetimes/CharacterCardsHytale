@@ -28,6 +28,9 @@ public class PluginConfig {
             .append(new KeyedCodec<>("Lore",new MapCodec<>(Codec.STRING, HashMap::new)),
                     (config, value) -> config.lore = value,
                     (config) -> config.lore).add()
+            .append(new KeyedCodec<>("LocalChat",new MapCodec<>(Codec.STRING, HashMap::new)),
+                    (config, value) -> config.localChat = value,
+                    (config) -> config.localChat).add()
             .build();
 
     private Map<String, String> name = new HashMap<>(Map.of(
@@ -144,6 +147,14 @@ public class PluginConfig {
 
     public boolean isLoreEnabled() {
         return Boolean.parseBoolean(lore.getOrDefault("Enabled", "false"));
+    }
+
+    public boolean isLocalChatEnabled(){
+        return Boolean.parseBoolean(localChat.getOrDefault("Enabled", "false"));
+    }
+
+    public boolean isLocalChatForced(){
+        return localChat.getOrDefault("Mode","COMMAND").equals("FORCED");
     }
 
 

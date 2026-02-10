@@ -19,8 +19,6 @@ import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import net.lordofthetimes.charactercards.CharacterCards;
 import net.lordofthetimes.charactercards.UI.CharacterCardEdit;
 import net.lordofthetimes.charactercards.utils.CardUtils;
-import org.jetbrains.annotations.NotNull;
-
 import javax.annotation.Nonnull;
 import java.awt.*;
 
@@ -87,10 +85,5 @@ public class CharacterEditCommand extends AbstractPlayerCommand {
     @Override
     public String getPermission() {
         return "charactercards.gui";
-    }
-
-    @Override
-    public boolean hasPermission(@NotNull CommandSender sender) {
-        return super.hasPermission(sender);
     }
 }

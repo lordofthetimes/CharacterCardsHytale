@@ -7,6 +7,7 @@ import com.hypixel.hytale.server.core.plugin.JavaPluginInit;
 import com.hypixel.hytale.server.core.util.Config;
 import net.lordofthetimes.charactercards.component.CharacterCardComponent;
 import net.lordofthetimes.charactercards.command.CharacterCommand;
+import net.lordofthetimes.charactercards.component.LocalChatComponent;
 import net.lordofthetimes.charactercards.event.onPlayerJoin;
 
 import javax.annotation.Nonnull;
@@ -29,6 +30,19 @@ public class CharacterCards extends JavaPlugin {
 
         LOGGER.atInfo().log("Setting up plugin " + this.getName());
 
+        registerComponents();
+
+        characterCommand = new CharacterCommand(this);
+
+
+        playerJoinEvent = new onPlayerJoin(this);
+
+        this.getEventRegistry().registerGlobal(PlayerReadyEvent.class, playerJoinEvent::onPlayerReady);
+        this.getCommandRegistry().registerCommand(characterCommand);
+        
+    }
+
+    private void registerComponents(){
         CharacterCardComponent.TYPE =
                 this.getEntityStoreRegistry().registerComponent(
                         CharacterCardComponent.class,
@@ -36,13 +50,10 @@ public class CharacterCards extends JavaPlugin {
                         CharacterCardComponent.CODEC
                 );
 
-        characterCommand = new CharacterCommand(this);
-
-
-        playerJoinEvent = new onPlayerJoin();
-
-        this.getEventRegistry().registerGlobal(PlayerReadyEvent.class, playerJoinEvent::onPlayerReady);
-        this.getCommandRegistry().registerCommand(characterCommand);
-        
+        LocalChatComponent.TYPE =
+                this.getEntityStoreRegistry().registerComponent(
+                        LocalChatComponent.class,
+                        LocalChatComponent::new
+                );
     }
 }
