@@ -1,15 +1,6 @@
 package net.lordofthetimes.charactercards.component;
 
-import com.hypixel.hytale.component.Component;
-import com.hypixel.hytale.component.ComponentType;
-import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
-import org.w3c.dom.html.HTMLOListElement;
-
-import javax.annotation.Nullable;
-
-public class LocalChatComponent implements Component<EntityStore> {
-
-    public static ComponentType<EntityStore, LocalChatComponent> TYPE;
+public class LocalChatComponent{
 
     private boolean forced = false;
     private boolean enabled = false;
@@ -22,17 +13,19 @@ public class LocalChatComponent implements Component<EntityStore> {
         this.enabled = enabled;
     }
 
+    public boolean isEnabled(){
+        return this.enabled;
+    }
+
     public void setForced(boolean forced) {
         this.forced = forced;
     }
 
-    public static ComponentType<EntityStore, LocalChatComponent> getComponentType(){
-        return TYPE;
+    public boolean isForced(){
+        return this.forced;
     }
 
-    @Nullable
-    @Override
-    public Component<EntityStore> clone() {
+    public LocalChatComponent clone() {
         LocalChatComponent local = new LocalChatComponent();
         local.enabled = enabled;
         local.forced = forced;

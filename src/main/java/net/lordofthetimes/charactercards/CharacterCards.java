@@ -1,14 +1,17 @@
 package net.lordofthetimes.charactercards;
 
 import com.hypixel.hytale.logger.HytaleLogger;
+import com.hypixel.hytale.server.core.event.events.player.PlayerChatEvent;
 import com.hypixel.hytale.server.core.event.events.player.PlayerReadyEvent;
 import com.hypixel.hytale.server.core.plugin.JavaPlugin;
 import com.hypixel.hytale.server.core.plugin.JavaPluginInit;
 import com.hypixel.hytale.server.core.util.Config;
+import net.lordofthetimes.charactercards.command.LocalChatCommand;
+import net.lordofthetimes.charactercards.command.localchatsubcmd.LocalChatTestCommand;
 import net.lordofthetimes.charactercards.component.CharacterCardComponent;
 import net.lordofthetimes.charactercards.command.CharacterCommand;
-import net.lordofthetimes.charactercards.component.LocalChatComponent;
-import net.lordofthetimes.charactercards.event.onPlayerJoin;
+import net.lordofthetimes.charactercards.event.EnsureComponents;
+import net.lordofthetimes.charactercards.event.LocalChat;
 
 import javax.annotation.Nonnull;
 
@@ -18,7 +21,10 @@ public class CharacterCards extends JavaPlugin {
     public final Config<PluginConfig> config = this.withConfig("CharacterCardsConfig", PluginConfig.CODEC);
 
     private CharacterCommand characterCommand;
-    private onPlayerJoin playerJoinEvent;
+    private LocalChatCommand localChatCommand;
+
+    private EnsureComponents ensureComponents;
+    private LocalChat localChat;
 
     public CharacterCards(@Nonnull JavaPluginInit init) {
         super(init);
@@ -27,19 +33,14 @@ public class CharacterCards extends JavaPlugin {
     @Override
     protected void setup() {
         config.save();
-
+        PluginConfig conf = config.get();
         LOGGER.atInfo().log("Setting up plugin " + this.getName());
 
         registerComponents();
 
-        characterCommand = new CharacterCommand(this);
+        registerCommands();
 
-
-        playerJoinEvent = new onPlayerJoin(this);
-
-        this.getEventRegistry().registerGlobal(PlayerReadyEvent.class, playerJoinEvent::onPlayerReady);
-        this.getCommandRegistry().registerCommand(characterCommand);
-        
+        registerEvents();
     }
 
     private void registerComponents(){
@@ -49,11 +50,21 @@ public class CharacterCards extends JavaPlugin {
                         "PlayerCharacterCard",
                         CharacterCardComponent.CODEC
                 );
+    }
 
-        LocalChatComponent.TYPE =
-                this.getEntityStoreRegistry().registerComponent(
-                        LocalChatComponent.class,
-                        LocalChatComponent::new
-                );
+    private  void registerCommands(){
+        characterCommand = new CharacterCommand(this);
+        localChatCommand = new LocalChatCommand();
+
+        this.getCommandRegistry().registerCommand(characterCommand);
+        this.getCommandRegistry().registerCommand(localChatCommand);
+    }
+
+    private  void registerEvents(){
+        localChat = new LocalChat(this);
+        ensureComponents = new EnsureComponents(this);
+
+        this.getEventRegistry().registerGlobal(PlayerReadyEvent.class, ensureComponents::onPlayerReady);
+        this.getEventRegistry().registerGlobal(PlayerChatEvent.class,localChat::onPlayerChat);
     }
 }

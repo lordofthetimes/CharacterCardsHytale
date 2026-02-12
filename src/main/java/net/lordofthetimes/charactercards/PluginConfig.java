@@ -78,10 +78,7 @@ public class PluginConfig {
             "Enabled", "true",
 
             "Message_Comment", "What message to use for Lore, %value% is a placeholder",
-            "Message", "Lore : %value%\n",
-
-            "Color_Comment","Currently unused",
-            "Color", ""
+            "Message", "Lore : %value%\n"
     ));
 
     private Map<String, String> localChat = new HashMap<>() {{
@@ -95,13 +92,10 @@ public class PluginConfig {
         put("Mode", "COMMAND");
 
         put("PrefixMode_Comment", "Defaults to CUSTOM if wrong or not specified, correct values : DISTANCE, CUSTOM, NONE. DISTANCE or NONE recommended for FORCED mode");
-        put("PrefixMode", "custom");
+        put("PrefixMode", "CUSTOM");
 
         put("CustomPrefix_Comment", "What prefix will display when prefixMode is set to custom, %player% is placeholder for the display name");
-        put("CustomPrefix", "[Local] %player%");
-
-        put("PrefixColor_Comment", "Currently unused");
-        put("PrefixColor", "");
+        put("CustomPrefix", "[Local] %player%: ");
     }};
 
 
@@ -149,12 +143,30 @@ public class PluginConfig {
         return Boolean.parseBoolean(lore.getOrDefault("Enabled", "false"));
     }
 
+
+
     public boolean isLocalChatEnabled(){
         return Boolean.parseBoolean(localChat.getOrDefault("Enabled", "false"));
     }
 
     public boolean isLocalChatForced(){
         return localChat.getOrDefault("Mode","COMMAND").equals("FORCED");
+    }
+
+    public int getDistance(){
+        return Integer.parseInt(localChat.getOrDefault("Distance","100"));
+    }
+
+    public boolean isLocalChatNoPrefix(){
+        return localChat.getOrDefault("PrefixMode","CUSTOM").equals("NONE");
+    }
+
+    public boolean isLocalChatDistancePrefix(){
+        return localChat.getOrDefault("PrefixMode","CUSTOM").equals("DISTANCE");
+    }
+
+    public String getCustomPrefix(){
+        return localChat.getOrDefault("CustomPrefix","[Local] %player%:");
     }
 
 

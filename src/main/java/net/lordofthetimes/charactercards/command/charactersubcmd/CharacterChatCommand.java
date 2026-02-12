@@ -5,6 +5,7 @@ import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.NameMatching;
 import com.hypixel.hytale.server.core.command.system.CommandContext;
+import com.hypixel.hytale.server.core.command.system.CommandSender;
 import com.hypixel.hytale.server.core.command.system.arguments.system.OptionalArg;
 import com.hypixel.hytale.server.core.command.system.arguments.types.ArgTypes;
 import com.hypixel.hytale.server.core.command.system.basecommands.AbstractPlayerCommand;
@@ -31,10 +32,7 @@ public class CharacterChatCommand extends AbstractPlayerCommand {
                 "Whose character card open. Leaving it empty will open it for player running the command", ArgTypes.STRING);
     }
 
-    @Override
-    public String getPermission() {
-        return "charactercards.chat";
-    }
+
 
     @Override
     protected void execute(@Nonnull CommandContext context, @Nonnull Store<EntityStore> execStore, @Nonnull Ref<EntityStore> execRef,
@@ -61,5 +59,15 @@ public class CharacterChatCommand extends AbstractPlayerCommand {
             });
 
         });
+    }
+
+    @Override
+    public String getPermission() {
+        return "charactercards.chat";
+    }
+
+    @Override
+    public boolean hasPermission(@Nonnull CommandSender sender) {
+        return sender.hasPermission(this.getPermission(),true);
     }
 }

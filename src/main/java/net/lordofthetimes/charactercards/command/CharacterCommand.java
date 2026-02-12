@@ -3,6 +3,7 @@ package net.lordofthetimes.charactercards.command;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.server.core.command.system.CommandContext;
+import com.hypixel.hytale.server.core.command.system.CommandSender;
 import com.hypixel.hytale.server.core.command.system.arguments.types.ArgTypes;
 import com.hypixel.hytale.server.core.command.system.basecommands.CommandBase;
 import com.hypixel.hytale.server.core.entity.entities.Player;
@@ -23,7 +24,6 @@ public class CharacterCommand extends CommandBase {
     public CharacterCommand(CharacterCards plugin){
         super("character","Main command for viewing and changing Character Cards");
 
-        this.withOptionalArg("subcmd","What sub command to use. Will send help message if empty", ArgTypes.STRING);
         this.addAliases("card","profile");
 
 
@@ -49,4 +49,9 @@ public class CharacterCommand extends CommandBase {
         return "charactercards";
     }
 
+
+    @Override
+    public boolean hasPermission(@Nonnull CommandSender sender) {
+        return sender.hasPermission(this.getPermission(),true);
+    }
 }

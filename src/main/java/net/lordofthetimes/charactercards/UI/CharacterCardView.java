@@ -45,11 +45,11 @@ public class CharacterCardView extends CustomUIPage {
     }
 
     public void removeDisabled(UICommandBuilder builder, PluginConfig config){
-        if(config.isNameEnabled()) builder.remove("#Name");
-        if(config.isAgeEnabled()) builder.remove("#Age");
-        if(config.isRaceEnabled()) builder.remove("#Race");
-        if(config.isGenderEnabled()) builder.remove("#Gender");
-        if(config.isDescriptionEnabled()) builder.remove("#Description");
-        if(config.isLoreEnabled()) builder.remove("#Lore");
+        if(!config.isNameEnabled()) builder.remove("#Name");
+        if(!config.isAgeEnabled()) builder.remove("#Age");
+        if(!config.isRaceEnabled()) builder.remove("#Race");
+        if(!config.isGenderEnabled()) builder.remove("#Gender");
+        if(!config.isDescriptionEnabled()) builder.remove("#Description");
+        if(!config.isLoreEnabled()) builder.remove("#Lore");
     }
 }
