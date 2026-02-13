@@ -31,6 +31,9 @@ public class PluginConfig {
             .append(new KeyedCodec<>("LocalChat",new MapCodec<>(Codec.STRING, HashMap::new)),
                     (config, value) -> config.localChat = value,
                     (config) -> config.localChat).add()
+            .append(new KeyedCodec<>("OrbisOrigins",new MapCodec<>(Codec.STRING, HashMap::new)),
+                    (config, value) -> config.orbisOrigins = value,
+                    (config) -> config.orbisOrigins).add()
             .build();
 
     private Map<String, String> name = new HashMap<>(Map.of(
@@ -85,6 +88,9 @@ public class PluginConfig {
         put("Enabled_Comment", "If local chat feature is enabled");
         put("Enabled", "true");
 
+        put("ShoutEnabled_Comment", "If shout is enabled");
+        put("ShoutEnabled", "true");
+
         put("Distance_Comment", "Maximum distance between players for local chat to show");
         put("Distance", "100");
 
@@ -96,6 +102,11 @@ public class PluginConfig {
 
         put("CustomPrefix_Comment", "What prefix will display when prefixMode is set to custom, %player% is placeholder for the display name. Supports TinyMessage color formatting");
         put("CustomPrefix", "<green><bold>[Local] %player%</bold></green>: ");
+    }};
+
+    private Map<String,String> orbisOrigins = new HashMap<>() {{
+        put("Enabled_Comment", "Orbis Origins compatibility. Will disable setting race and use race from Orbis Origins");
+        put("Enabled", "true");
     }};
 
 
@@ -169,5 +180,13 @@ public class PluginConfig {
         return localChat.getOrDefault("CustomPrefix","[Local] %player%:");
     }
 
+    public  boolean isShoutEnabled(){
+        return Boolean.parseBoolean(localChat.getOrDefault("ShoutEnabled", "true"));
+    }
 
+
+
+    public boolean isOrbisOriginsSupportEnabled(){
+        return Boolean.parseBoolean(orbisOrigins.getOrDefault("Enabled", "true"));
+    }
 }

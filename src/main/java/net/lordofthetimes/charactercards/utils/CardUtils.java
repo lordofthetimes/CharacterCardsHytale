@@ -22,10 +22,10 @@ public class CardUtils {
 
     private static final CharacterService service = new CharacterService();
 
-    public static CharacterCardEdit editPlayerCharacter(Store<EntityStore> store, Ref<EntityStore> ref, String username, UUID uuid){
+    public static CharacterCardEdit editPlayerCharacter(Store<EntityStore> store, Ref<EntityStore> ref, String username, UUID uuid,CharacterCards plugin){
         PlayerRef playerRef = store.getComponent(ref,PlayerRef.getComponentType());
         CharacterCardComponent character = store.getComponent(ref, CharacterCardComponent.getComponentType());
-        return new CharacterCardEdit(playerRef,character,username,uuid);
+        return new CharacterCardEdit(playerRef,character,username,uuid,plugin);
     }
 
     public static boolean setPlayerCharacter(Store<EntityStore> store, Ref<EntityStore> ref, CharacterCardComponent character){

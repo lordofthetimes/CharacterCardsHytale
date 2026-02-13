@@ -4,8 +4,6 @@ import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.math.vector.Vector3d;
 import com.hypixel.hytale.server.core.Message;
-import com.hypixel.hytale.server.core.entity.Entity;
-import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.event.events.player.PlayerChatEvent;
 import com.hypixel.hytale.server.core.modules.entity.component.DisplayNameComponent;
 import com.hypixel.hytale.server.core.modules.entity.component.TransformComponent;
@@ -90,7 +88,7 @@ public class LocalChat {
                 sender.sendMessage(TinyMsg.parse("<yellow>[TEST MODE]</yellow><green> Target is in distance"));
                 sender.sendMessage(
                         Message.join(
-                                TinyMsg.parse("<yellow>[TEST MODE]</yellow><green> Message received by target:"),
+                                TinyMsg.parse("<yellow>[TEST MODE]</yellow><green> Message received by target: "),
                                 getMessage(displayName.getRawText(),config,content,realDistance,false)
                         )
                 );

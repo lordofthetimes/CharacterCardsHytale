@@ -11,13 +11,16 @@ import com.hypixel.hytale.protocol.packets.interface_.Page;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.entity.entities.player.pages.InteractiveCustomUIPage;
+import com.hypixel.hytale.server.core.modules.entity.component.DisplayNameComponent;
 import com.hypixel.hytale.server.core.ui.builder.EventData;
 import com.hypixel.hytale.server.core.ui.builder.UICommandBuilder;
 import com.hypixel.hytale.server.core.ui.builder.UIEventBuilder;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.Universe;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
+import net.lordofthetimes.charactercards.CharacterCards;
 import net.lordofthetimes.charactercards.PluginConfig;
+import net.lordofthetimes.charactercards.compatibility.OrbisOriginsCompatibility;
 import net.lordofthetimes.charactercards.component.CharacterCardComponent;
 import net.lordofthetimes.charactercards.utils.CardUtils;
 
@@ -30,11 +33,13 @@ public class CharacterCardEdit extends InteractiveCustomUIPage<CharacterCardEdit
     private final CharacterCardComponent character;
     private final String username;
     private final UUID ownerUUID;
-    public CharacterCardEdit(@Nonnull PlayerRef playerRef, CharacterCardComponent character, String username, UUID ownerUUID) {
+    private final CharacterCards plugin;
+    public CharacterCardEdit(@Nonnull PlayerRef playerRef, CharacterCardComponent character, String username, UUID ownerUUID, CharacterCards plugin) {
         super(playerRef, CustomPageLifetime.CantClose,Data.CODEC);
         this.character = character;
         this.username = username;
         this.ownerUUID = ownerUUID;
+        this.plugin = plugin;
     }
 
     @Override
@@ -59,6 +64,8 @@ public class CharacterCardEdit extends InteractiveCustomUIPage<CharacterCardEdit
                         .append("@Description", "#Description.Value")
                         .append("@Lore", "#Lore.Value")
         );
+
+        hideDisabled(cmd,plugin.config.get());
     }
 
     @Override
@@ -94,12 +101,30 @@ public class CharacterCardEdit extends InteractiveCustomUIPage<CharacterCardEdit
     }
 
     public void hideDisabled(UICommandBuilder builder, PluginConfig config){
-        if(config.isNameEnabled()) builder.remove("#Name");
-        if(config.isAgeEnabled()) builder.remove("#Age");
-        if(config.isRaceEnabled()) builder.remove("#Race");
-        if(config.isGenderEnabled()) builder.remove("#Gender");
-        if(config.isDescriptionEnabled()) builder.remove("#Description");
-        if(config.isLoreEnabled()) builder.remove("#Lore");
+        if(!config.isNameEnabled()){
+            builder.set("#NameLabel.Visible",false);
+            builder.set("#Name.Visible",false);
+        }
+        if(!config.isAgeEnabled()){
+            builder.set("#AgeLabel.Visible",false);
+            builder.set("#Age.Visible",false);
+        }
+        if(!config.isRaceEnabled() || OrbisOriginsCompatibility.supportEnabled){
+            builder.set("#RaceLabel.Visible",false);
+            builder.set("#Race.Visible",false);
+        }
+        if(!config.isGenderEnabled()){
+            builder.set("#GenderLabel.Visible",false);
+            builder.set("#Gender.Visible",false);
+        }
+        if(!config.isDescriptionEnabled()){
+            builder.set("#DescriptionLabel.Visible",false);
+            builder.set("#Description.Visible",false);
+        }
+        if(!config.isLoreEnabled()){
+            builder.set("#LoreLabel.Visible",false);
+            builder.set("#Lore.Visible",false);
+        }
     }
 
     public static class Data{

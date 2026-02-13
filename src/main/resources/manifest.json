@@ -12,5 +12,8 @@
     "ServerVersion": "*",
     "DisabledByDefault": false,
     "Main": "net.lordofthetimes.charactercards.CharacterCards",
-    "IncludesAssetPack": true
+    "IncludesAssetPack": true,
+    "OptionalDependencies": {
+        "hexvane:OrbisOrigins": "*"
+    }
 }

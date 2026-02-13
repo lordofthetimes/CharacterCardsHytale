@@ -25,9 +25,11 @@ import java.awt.*;
 public class CharacterEditCommand extends AbstractPlayerCommand {
 
     private final OptionalArg<String> playerArg;
+    private final CharacterCards plugin;
 
     public CharacterEditCommand(CharacterCards plugin){
         super("edit","Command for editing Character Cards");
+        this.plugin = plugin;
         playerArg = this.withOptionalArg("player",
                 "Whose character card edit menu will open. Leaving it empty will open it for player running the command", ArgTypes.STRING);
     }
@@ -44,7 +46,8 @@ public class CharacterEditCommand extends AbstractPlayerCommand {
                         execStore,
                         execRef,
                         executor.getDisplayName(),
-                        execPlayerRef.getUuid()
+                        execPlayerRef.getUuid(),
+                        plugin
                 );
 
                 executor.getPageManager().openCustomPage(execRef,execStore,page);
@@ -70,7 +73,8 @@ public class CharacterEditCommand extends AbstractPlayerCommand {
                         targetRefStore,
                         targetRef,
                         player.getDisplayName(),
-                        targetRefStore.getComponent(targetRef, UUIDComponent.getComponentType()).getUuid()
+                        targetRefStore.getComponent(targetRef, UUIDComponent.getComponentType()).getUuid(),
+                        plugin
                 );
                 executor.getWorld().execute(()->{
 
