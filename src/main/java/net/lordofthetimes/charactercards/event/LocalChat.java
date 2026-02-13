@@ -13,6 +13,7 @@ import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.Universe;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
+import fi.sulku.hytale.TinyMsg;
 import net.lordofthetimes.charactercards.CharacterCards;
 import net.lordofthetimes.charactercards.PluginConfig;
 import net.lordofthetimes.charactercards.component.LocalChatComponent;
@@ -55,9 +56,9 @@ public class LocalChat {
 
     public Message getMessage(String displayName, PluginConfig config, String content, double distance,boolean isSender){
         if(config.isLocalChatNoPrefix()){
-            return Message.raw(displayName + ": " + content);
+            return  Message.join(TinyMsg.parse("<bold><green>" + displayName + "</green></bold>: "),Message.raw(content));
         }else if(config.isLocalChatDistancePrefix()){
-            if(isSender) return Message.raw(displayName + ": " + content);
+            if(isSender) return Message.join(TinyMsg.parse("<bold><green>" + displayName + "</green></bold>: "),Message.raw(content));
             return LocalChatUtils.localChatDistancePrefix(distance,displayName,content);
         }else{
             return LocalChatUtils.localChatCustomPrefix(config,displayName,content);
@@ -77,26 +78,26 @@ public class LocalChat {
             Vector3d senderPos = transformSender.getPosition();
             Vector3d targetPos = LocalChatUtils.getTestPoint();
 
-            sender.sendMessage(Message.raw(
-                    "Sender: %s %s %s | Target: %s %s %s"
+            sender.sendMessage(TinyMsg.parse(
+                    "<yellow>[TEST MODE]</yellow><green> Sender: %s %s %s | Target: %s %s %s"
                             .formatted(
                                     senderPos.getX(), senderPos.getY(), senderPos.getZ(),
                                     targetPos.getX(), targetPos.getY(), targetPos.getZ()
                             )
             ));
-            sender.sendMessage(Message.raw("[TEST MODE] Distance to target is %s blocks".formatted(realDistance)));
+            sender.sendMessage(TinyMsg.parse("<yellow>[TEST MODE]</yellow><green> Distance to target is %s blocks".formatted(realDistance)));
             if(distance <= maxDistance * maxDistance){
-                sender.sendMessage(Message.raw("[TEST MODE] Target is in distance"));
+                sender.sendMessage(TinyMsg.parse("<yellow>[TEST MODE]</yellow><green> Target is in distance"));
                 sender.sendMessage(
                         Message.join(
-                                Message.raw("[TEST MODE] Message received by target:"),
+                                TinyMsg.parse("<yellow>[TEST MODE]</yellow><green> Message received by target:"),
                                 getMessage(displayName.getRawText(),config,content,realDistance,false)
                         )
                 );
 
             }
             else{
-                sender.sendMessage(Message.raw("[TEST MODE] Target is not in distance"));
+                sender.sendMessage(TinyMsg.parse("<yellow>[TEST MODE]</yellow><green> Target is not in distance"));
             }
 
         });
@@ -110,6 +111,8 @@ public class LocalChat {
 
             TransformComponent transformSender = store.getComponent(senderRef, TransformComponent.getComponentType());
             Message displayName = store.getComponent(senderRef, DisplayNameComponent.getComponentType()).getDisplayName();
+            //log message sent on local chat
+            plugin.getLogger().atInfo().log("%s: %s".formatted(displayName.getRawText(),content));
 
             world.getPlayerRefs().stream().forEach(playerRef -> {
                 TransformComponent transformTarget = store.getComponent(playerRef.getReference(), TransformComponent.getComponentType());

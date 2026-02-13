@@ -38,6 +38,8 @@ public class CharacterCards extends JavaPlugin {
 
         registerComponents();
 
+        if(conf.isLocalChatEnabled()) registerLocalChat();
+
         registerCommands();
 
         registerEvents();
@@ -54,17 +56,27 @@ public class CharacterCards extends JavaPlugin {
 
     private  void registerCommands(){
         characterCommand = new CharacterCommand(this);
-        localChatCommand = new LocalChatCommand();
 
         this.getCommandRegistry().registerCommand(characterCommand);
-        this.getCommandRegistry().registerCommand(localChatCommand);
+
     }
 
     private  void registerEvents(){
-        localChat = new LocalChat(this);
         ensureComponents = new EnsureComponents(this);
 
         this.getEventRegistry().registerGlobal(PlayerReadyEvent.class, ensureComponents::onPlayerReady);
+    }
+
+    private void registerLocalChat(){
+        localChatCommand = new LocalChatCommand();
+        this.getCommandRegistry().registerCommand(localChatCommand);
+
+        localChat = new LocalChat(this);
         this.getEventRegistry().registerGlobal(PlayerChatEvent.class,localChat::onPlayerChat);
+
+    }
+
+    private void registerShout(){
+
     }
 }

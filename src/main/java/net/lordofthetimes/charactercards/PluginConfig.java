@@ -94,8 +94,8 @@ public class PluginConfig {
         put("PrefixMode_Comment", "Defaults to CUSTOM if wrong or not specified, correct values : DISTANCE, CUSTOM, NONE. DISTANCE or NONE recommended for FORCED mode");
         put("PrefixMode", "CUSTOM");
 
-        put("CustomPrefix_Comment", "What prefix will display when prefixMode is set to custom, %player% is placeholder for the display name");
-        put("CustomPrefix", "[Local] %player%: ");
+        put("CustomPrefix_Comment", "What prefix will display when prefixMode is set to custom, %player% is placeholder for the display name. Supports TinyMessage color formatting");
+        put("CustomPrefix", "<green><bold>[Local] %player%</bold></green>: ");
     }};
 
 

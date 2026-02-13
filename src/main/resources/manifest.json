@@ -10,12 +10,6 @@
     ],
     "Website": "",
     "ServerVersion": "*",
-    "Dependencies": {
-        
-    },
-    "OptionalDependencies": {
-        
-    },
     "DisabledByDefault": false,
     "Main": "net.lordofthetimes.charactercards.CharacterCards",
     "IncludesAssetPack": true

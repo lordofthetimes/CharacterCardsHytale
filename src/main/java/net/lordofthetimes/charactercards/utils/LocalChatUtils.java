@@ -3,6 +3,7 @@ package net.lordofthetimes.charactercards.utils;
 
 import com.hypixel.hytale.math.vector.Vector3d;
 import com.hypixel.hytale.server.core.Message;
+import fi.sulku.hytale.TinyMsg;
 import net.lordofthetimes.charactercards.PluginConfig;
 import net.lordofthetimes.charactercards.component.LocalChatComponent;
 import net.lordofthetimes.charactercards.service.LocalChatService;
@@ -27,12 +28,12 @@ public class LocalChatUtils {
 
     public static Message localChatCustomPrefix(PluginConfig config, String displayName,String content){
         String prefix = config.getCustomPrefix().replace("%player%",displayName);
-        return Message.join(Message.raw(prefix),Message.raw(content));
+        return Message.join(TinyMsg.parse(prefix),Message.raw(content));
     }
 
     public static Message localChatDistancePrefix(double distance, String displayName,String content){
-        String prefix = "[%.1fm] %s: ".formatted(distance,displayName);
-        return Message.join(Message.raw(prefix),Message.raw(content));
+        String prefix = "<bold><yellow>[%.1fm]</yellow><green> %s</green></bold>: ".formatted(distance,displayName);
+        return Message.join(TinyMsg.parse(prefix),Message.raw(content));
     }
 
     public static void setTestPoint(Vector3d location){
