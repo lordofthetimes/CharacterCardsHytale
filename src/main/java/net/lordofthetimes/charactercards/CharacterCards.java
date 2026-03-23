@@ -97,7 +97,7 @@ public class CharacterCards extends JavaPlugin {
 
     private void tryEnableOrbisOriginsCompatibility(){
         PluginBase plugin = HytaleServer.get().getPluginManager().getPlugin(PluginIdentifier.fromString("hexvane:OrbisOrigins"));
-        if(config.get().isOrbisOriginsSupportEnabled() && plugin.isEnabled()){
+        if(plugin != null && config.get().isOrbisOriginsSupportEnabled() && plugin.isEnabled()){
             OrbisOriginsCompatibility.supportEnabled = true;
         }
     }
